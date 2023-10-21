@@ -1,0 +1,32 @@
+name: ci
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar ESLint
+        run: npm run lint
+
+      - name: Executar testes unitários
+        run: npm test
+
+      - name: Executar testes E2E
+        run: npm run test:e2e
