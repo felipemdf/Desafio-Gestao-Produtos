@@ -1,8 +1,5 @@
-// import { Loja } from 'src/resources/lojas/entities/loja.entity';
-import { Loja } from 'src/resources/lojas/entities/loja.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ProdutoLoja } from './produtoLoja.entity';
-// import { Produtoloja } from './produtoloja.entity';
 
 @Entity('produto')
 export class Produto {
