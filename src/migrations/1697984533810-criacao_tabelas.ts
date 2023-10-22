@@ -19,9 +19,10 @@ export class CriacaoTabelas1697984533810 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `CREATE TABLE "produtoloja" (
+      `CREATE TABLE "produtoLoja" (
         "idProduto" INT NOT NULL, 
         "idLoja" INT NOT NULL,
+        "precoVenda" NUMERIC(10,3),
 
         CONSTRAINT "FK_produtoLoja_produto" 
             FOREIGN KEY ("idProduto") 
@@ -32,7 +33,7 @@ export class CriacaoTabelas1697984533810 implements MigrationInterface {
             FOREIGN KEY ("idLoja") 
             REFERENCES "loja" ("id")
             ON DELETE CASCADE
-        );`,
+        )`,
     );
   }
 
