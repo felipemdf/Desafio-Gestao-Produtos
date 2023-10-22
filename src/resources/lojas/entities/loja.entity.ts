@@ -1,5 +1,4 @@
-// import { Produto } from 'src/resources/produtos/entities/produto.entity';
-import { ProdutoLoja } from 'src/resources/produtos/entities/produtoLoja.entity';
+import { ProdutoLoja } from '../../produtos/entities/produtoLoja.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('loja')
