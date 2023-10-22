@@ -9,10 +9,11 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - /dist
     ports:
       - ${API_PORT}:${API_PORT}
       - 9229:9229
-    command: npm run start:debug
+    command: npm run start:docker
     env_file:
       - .env
     networks:
@@ -20,9 +21,9 @@ services:
     depends_on:
       - postgres
 
-  postgres:
+  db:
     container_name: nest_db
-    image: postgres:9.6-alpine
+    image: postgres:16.0-alpine3.17
     networks:
       - desafio-gestao-produtos-network
     environment:
@@ -31,10 +32,27 @@ services:
       POSTGRES_DB: ${DB_NAME}
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5432
+      - 5432:5432
     volumes:
       - api_db_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "teste"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - desafio-gestao-produtos-network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+
 networks:
   desafio-gestao-produtos-network:
 volumes:
   api_db_data:
+  pgadmin-data:
