@@ -1,4 +1,4 @@
-import { Produto } from '../produto.entity';
+import { Produto } from '../entities/produto.entity';
 import { DetailsProdutoLojaDto } from './details-produtoLoja.dto';
 
 export class DetailsProdutoDto {
