@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -6,6 +6,8 @@ import { ProdutoLoja } from './entities/produtoLoja.entity';
 import { Produto } from './entities/produto.entity';
 import { FilterProdutoDto } from './entities/dto/filter-produto.dto';
 import { ProdutoDto } from './entities/dto/produto.dto';
+import { DetailsProdutoDto } from './entities/dto/details-produto.dto';
+import { DetailsProdutoLojaDto } from './entities/dto/details-produtoLoja.dto';
 
 @Injectable()
 export class ProdutosService {
@@ -46,8 +48,36 @@ export class ProdutosService {
 
     const produtos: Produto[] = await query.getMany();
 
-    const result: ProdutoDto[] = ProdutoDto.ProdutoToProdutoDto(produtos);
+    const result: ProdutoDto[] = ProdutoDto.produtoToProdutoDto(produtos);
 
     return result;
+  }
+
+  async findOne(id: number): Promise<DetailsProdutoDto> {
+    const produto: Produto = (
+      await this.produtoRepository.find({
+        select: {
+          produtoLojas: {
+            precoVenda: true,
+            loja: { id: true, descricao: true },
+          },
+        },
+        where: { id: id },
+        relations: ['produtoLojas', 'produtoLojas.loja'],
+      })
+    )[0];
+
+    if (!produto) {
+      throw new HttpException(`Produto não encontrado`, HttpStatus.NOT_FOUND);
+    }
+    const detailsProduto =
+      DetailsProdutoDto.produtoToDetailsProdutoDto(produto);
+
+    detailsProduto.produtoLojas =
+      DetailsProdutoLojaDto.produtoLojasToDetailsProdutoLojaDto(
+        produto.produtoLojas,
+      );
+
+    return detailsProduto;
   }
 }

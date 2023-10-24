@@ -6,7 +6,7 @@ export class ProdutoDto {
   custo?: number;
   imagem?: Buffer;
 
-  static ProdutoToProdutoDto(produtos: Produto[]): ProdutoDto[] {
+  static produtoToProdutoDto(produtos: Produto[]): ProdutoDto[] {
     const produtosDto: ProdutoDto[] = [];
 
     for (const produto of produtos) {
