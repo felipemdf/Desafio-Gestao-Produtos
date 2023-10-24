@@ -80,4 +80,8 @@ export class ProdutosService {
 
     return detailsProduto;
   }
+
+  async remove(id: number): Promise<void> {
+    this.produtoRepository.delete(id);
+  }
 }
