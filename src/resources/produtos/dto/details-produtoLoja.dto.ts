@@ -1,4 +1,4 @@
-import { ProdutoLoja } from '../produtoLoja.entity';
+import { ProdutoLoja } from '../entities/produtoLoja.entity';
 
 export class DetailsProdutoLojaDto {
   id: number;
