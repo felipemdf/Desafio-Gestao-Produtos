@@ -120,7 +120,7 @@ export class ProdutosService {
   ): Promise<void> {
     const lojasValidas = new Set<number>();
 
-    if (this.verificaLojasRepetidas(lojasValidas, lojasParaAtualizar)) {
+    if (await this.verificaLojasRepetidas(lojasValidas, lojasParaAtualizar)) {
       throw new HttpException(
         'Não é permitido mais que um preço de venda para a mesma loja.',
         HttpStatus.BAD_REQUEST,
