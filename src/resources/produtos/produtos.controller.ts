@@ -15,7 +15,6 @@ import { Response } from 'express';
 import { ProdutosService } from './produtos.service';
 
 import { ProdutoDto } from './dto/produto.dto';
-import { FilterProdutoDto } from './dto/filter-produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 

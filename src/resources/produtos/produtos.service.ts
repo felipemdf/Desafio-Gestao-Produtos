@@ -4,7 +4,6 @@ import { EntityManager, Repository } from 'typeorm';
 
 import { ProdutoLoja } from './entities/produtoLoja.entity';
 import { Produto } from './entities/produto.entity';
-import { FilterProdutoDto } from './dto/filter-produto.dto';
 import { ProdutoDto } from './dto/produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
 import { DetailsProdutoLojaDto } from './dto/details-produtoLoja.dto';
