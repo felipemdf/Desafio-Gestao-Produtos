@@ -18,6 +18,21 @@ export class ProdutoLojaDto {
   )
   precoVenda: number;
 
+  static produtoLojaToProdutoLojaDto(
+    produtoLojas: ProdutoLoja[],
+  ): ProdutoLojaDto[] {
+    const dtos = produtoLojas.map((produtoLoja: ProdutoLoja) => {
+      const dto: ProdutoLojaDto = new ProdutoLojaDto();
+
+      dto.idLoja = produtoLoja.idLoja;
+      dto.precoVenda = produtoLoja.precoVenda;
+
+      return dto;
+    });
+
+    return dtos;
+  }
+
   static produtoLojaDtoToProdutoLoja(
     idProduto: number,
     dto: ProdutoLojaDto[],

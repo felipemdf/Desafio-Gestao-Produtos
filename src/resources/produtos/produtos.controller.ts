@@ -24,8 +24,8 @@ export class ProdutosController {
   constructor(private readonly produtoService: ProdutosService) {}
 
   @Get()
-  async findAll(@Query() filtro: FilterProdutoDto): Promise<ProdutoDto[]> {
-    return await this.produtoService.findAll(filtro);
+  async findAll(): Promise<ProdutoDto[]> {
+    return await this.produtoService.findAll();
   }
 
   @Get(':id')

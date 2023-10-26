@@ -21,38 +21,19 @@ export class ProdutosService {
     private produtoLojaRepository: Repository<ProdutoLoja>,
   ) {}
 
-  async findAll(filtro: FilterProdutoDto): Promise<ProdutoDto[]> {
-    const query = this.produtoRepository
-      .createQueryBuilder('produto')
-      .innerJoin('produto.produtoLojas', 'produtoLoja');
+  async findAll(): Promise<ProdutoDto[]> {
+    const produtos: Produto[] = await this.produtoRepository.find({
+      select: {
+        produtoLojas: { precoVenda: true, idLoja: true },
+      },
+      relations: ['produtoLojas'],
+    });
 
-    if (filtro.codigo)
-      query.andWhere('produto.id = :codigo', { codigo: filtro.codigo });
+    if (!produtos || produtos.length == 0) return [];
 
-    if (filtro.descricao)
-      query.andWhere('produto.descricao LIKE :descricao', {
-        descricao: `%${filtro.descricao}%`,
-      });
+    const produtosDto: ProdutoDto[] = ProdutoDto.produtoToProdutoDto(produtos);
 
-    if (filtro.custo)
-      query.andWhere('produto.custo = :custo', { custo: filtro.custo });
-
-    if (filtro.precoVenda)
-      query.andWhere('produtoLoja.precoVenda = :precoVenda', {
-        precoVenda: filtro.precoVenda,
-      });
-
-    query.addOrderBy('produto.id');
-    query.distinctOn(['produto.id']);
-
-    query.skip((filtro.page - 1) * filtro.limit);
-    query.take(filtro.limit);
-
-    const produtos: Produto[] = await query.getMany();
-
-    const result: ProdutoDto[] = ProdutoDto.produtoToProdutoDto(produtos);
-
-    return result;
+    return produtosDto;
   }
 
   async findOne(id: number): Promise<DetailsProdutoDto> {
