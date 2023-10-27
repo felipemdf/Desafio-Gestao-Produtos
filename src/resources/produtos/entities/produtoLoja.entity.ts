@@ -20,10 +20,4 @@ export class ProdutoLoja {
   @ManyToOne(() => Loja)
   @JoinColumn({ name: 'idLoja' })
   loja: Loja;
-
-  constructor(produtoLoja: Partial<ProdutoLoja>) {
-    this.idLoja = produtoLoja?.idLoja;
-    this.idProduto = produtoLoja?.idProduto;
-    this.precoVenda = produtoLoja?.precoVenda;
-  }
 }

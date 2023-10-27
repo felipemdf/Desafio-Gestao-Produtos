@@ -10,7 +10,6 @@ import {
 
 import { ProdutosService } from './produtos.service';
 
-import pako from 'pako';
 import { ProdutoDto } from './dto/produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
 import { SaveProdutoDto } from './dto/save-produto.dto';

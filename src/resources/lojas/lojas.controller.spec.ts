@@ -8,6 +8,7 @@ const lojasList: LojaDto[] = [
   { id: 2, descricao: '2-LOJA 2' },
   { id: 3, descricao: '3-LOJA 3' },
 ];
+
 describe('LojasController', () => {
   let controller: LojasController;
   let lojaService: LojasService;
@@ -43,7 +44,7 @@ describe('LojasController', () => {
       expect(lojaService.findAll).toHaveBeenCalledTimes(1);
     });
 
-    it('deve gerar um excessão', () => {
+    it('deve gerar um exceção', () => {
       jest.spyOn(lojaService, 'findAll').mockRejectedValueOnce(new Error());
 
       expect(controller.findAll()).rejects.toThrowError();
