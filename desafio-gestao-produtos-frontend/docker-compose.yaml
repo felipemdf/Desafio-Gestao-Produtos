@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  web:
+    container_name: angular_web
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /dist
+    ports:
+      - 4200:4200
+    command: npm run start
+    networks:
+      - desafio-gestao-produtos-network
+    depends_on:
+      - api
+
+networks:
+  desafio-gestao-produtos-network:
+

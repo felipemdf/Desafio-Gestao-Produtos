@@ -1,0 +1,47 @@
+/* TOOLBAR */
+.toolbar {
+  display: flex;
+  margin: 0 auto;
+}
+
+.toolbar div{
+  flex: 1;
+}
+
+.toolbar div#toolbar-text{
+  text-align: center;
+}
+
+.container {
+  padding: 50px 80px;
+}
+
+
+/* TABLE */
+[class*="mat-column"]:not([class$="acoes"]) {
+  border-right: 1px solid gray;
+} 
+
+[class*="mat-column"] {
+  text-align: center;
+}
+
+.mat-mdc-table {
+  border: 1px solid gray;
+  box-shadow: none;
+}
+
+/* FORM */
+mat-form-field {
+  width: 12em;
+  padding-right: 2em;
+}
+
+mat-form-field#field-descricao {
+  width: 25em;
+}
+
+#form-filter {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}

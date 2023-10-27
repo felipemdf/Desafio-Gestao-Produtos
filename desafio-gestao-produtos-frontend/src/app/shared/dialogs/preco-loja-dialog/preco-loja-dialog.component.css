@@ -1,0 +1,33 @@
+/* TOOLBAR */
+.toolbar {
+    display: flex;
+    margin: 0 auto;
+}
+  
+.toolbar div{
+    flex: 1;
+}
+  
+.toolbar div#toolbar-text{
+    text-align: center;
+}
+
+.toolbar div#toolbar-exit{
+    text-align: right;
+}
+  
+.container {
+    padding: 50px 80px;
+  }
+
+
+  /* FORM */
+mat-form-field {
+    width: 12em;
+    padding-right: 2em;
+  }
+  
+mat-form-field#field-loja {
+    width: 20em;
+}
+  

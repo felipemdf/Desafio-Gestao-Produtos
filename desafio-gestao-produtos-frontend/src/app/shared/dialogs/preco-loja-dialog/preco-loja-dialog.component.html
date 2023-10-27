@@ -1,0 +1,39 @@
+<mat-toolbar color="primary" class="toolbar">
+    <mat-toolbar-row>
+      <div>
+        <button mat-icon-button type="submit"  (click)="submit()" form="form-preco-loja">
+          <mat-icon class="toolbar-icon">save</mat-icon>
+        </button>
+        
+      </div>
+      <div id="toolbar-text"><span>Alteração/Inclusão de Preços</span> </div>
+      <div id="toolbar-exit">
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="toolbar-icon">close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+
+  <div class="container">
+    <form id="form-preco-loja" [formGroup]="formControl">
+      <mat-form-field id="field-loja">
+        <mat-label>Loja</mat-label>
+        <mat-select formControlName="idLoja" matNativeControl (selectionChange)="udpdateDescricao($event)" required>
+          <mat-option *ngFor="let loja of opcoesLojas" [value]="loja.id">
+            {{loja.descricao}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formControl.controls['idLoja'].invalid"> Este campo é obrigatório. </mat-error>
+      </mat-form-field>
+
+      <mat-form-field >
+        <mat-label>Preço de Venda</mat-label>
+        <input matInput formControlName="precoVenda" type="text" mask="separator.2" decimalMarker="." thousandSeparator="" matInput placeholder="Preço de Venda" #input>
+        <mat-error *ngIf="formControl.controls['precoVenda'].invalid">
+          Este campo é obrigatório.
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>

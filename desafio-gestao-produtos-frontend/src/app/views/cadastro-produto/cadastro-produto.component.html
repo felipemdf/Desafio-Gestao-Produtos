@@ -1,0 +1,95 @@
+<mat-toolbar color="primary" class="toolbar">
+    <mat-toolbar-row>
+      
+      <div>
+        <button mat-icon-button type="submit" form="form-produto">
+          <mat-icon class="toolbar-icon">save</mat-icon>
+        </button>
+
+        <button type="button" (click)="deleteProduto()" mat-icon-button>
+          <mat-icon class="toolbar-icon">delete</mat-icon>
+        </button>
+      </div>
+
+      <div id="toolbar-text"><span>Cadastro de Produto</span> </div>
+      <div></div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="container">
+  <form id="form-produto" [formGroup]="formControl" (submit)="submit()">
+
+    <mat-grid-list cols="3">
+      <mat-grid-tile colspan="2" rowspan="4">
+        <div class="grid-item">
+          <mat-form-field id="field-codigo">
+            <mat-label>Código</mat-label>
+            <input formControlName="id" matInput placeholder="Código" readonly #input>
+          </mat-form-field>
+          
+          <mat-form-field id="field-descricao">
+            <mat-label>Descrição</mat-label>
+            <input formControlName="descricao" matInput placeholder="Descrição" maxlength="60" #input required>
+            <mat-error *ngIf="formControl.controls['descricao'].invalid">
+              Este campo é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        
+          <mat-form-field id="field-custo">
+            <mat-label>Custo</mat-label>
+            <input formControlName="custo" type="text" mask="separator.2" decimalMarker="." thousandSeparator="" matInput placeholder="Custo" #input>
+          </mat-form-field>
+
+
+
+          <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+            <ng-container matColumnDef="descricao">
+
+              <th mat-header-cell *matHeaderCellDef>
+                <div class="th-descricao">
+                  <div class="th-div th-button">
+                    <button mat-icon-button type="button" (click)="openDialog()">
+                      <mat-icon class="material-icons">add_circle_outline</mat-icon>
+                    </button>
+                  </div>
+                  <div class="th-div"><span>Descrição</span></div>
+                  <div class="th-div"></div>
+                </div>
+              </th>
+              <td mat-cell *matCellDef="let element"> {{element.descricao}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="precoVenda">
+              <th mat-header-cell *matHeaderCellDef> Preço Venda (R$) </th>
+              <td mat-cell *matCellDef="let element"> {{element.precoVenda | number : '1.2-2'}}  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef> Ações </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button type="button" (click)="openDialog(element)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button type="button" (click)="removePrecoLoja(element.idLoja)"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+    </mat-grid-tile>
+
+      <mat-grid-tile colspan="1" class="grid-item">
+        <div class="grid-item">
+          <mat-card class="example-card">
+              <img mat-card-image [src]="imagemBase64  || '/assets/no_image.png'">
+          <mat-card-actions>
+            <button mat-button type="button" color="primary" style="margin-right: 1em;" (click)="fileInput.click()"> UPLOAD</button>
+            <input  hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" accept="image/*">
+            <button mat-button type="button" color="warn" (click)="onRemoveImage()"> REMOVER </button>
+          </mat-card-actions>
+        </mat-card>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
