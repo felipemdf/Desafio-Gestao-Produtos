@@ -6,12 +6,18 @@ import {
   ArrayNotEmpty,
   ValidateNested,
   IsOptional,
+  IsInt,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Produto } from '../entities/produto.entity';
 import { ProdutoLojaDto } from './produtoLoja.dto';
 
-export class CreateProdutoDto {
+export class SaveProdutoDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt({ message: 'O campo id deve ser um inteiro' })
+  id?: number;
+
   @IsNotEmpty({ message: 'Descrição deve ser preenchida' })
   @Length(3, 60, {
     message: 'O campo descrição precisa ter entre 3 e 60 caracteres',
@@ -38,13 +44,23 @@ export class CreateProdutoDto {
   @Type(() => ProdutoLojaDto)
   produtoLojas: ProdutoLojaDto[];
 
-  static createProdutoDtoToProduto(dto: CreateProdutoDto): Produto {
+  static saveProdutoDtoProduto(dto: SaveProdutoDto): Produto {
     const produto: Produto = new Produto();
 
+    produto.id = dto.id;
     produto.descricao = dto.descricao;
     produto.custo = dto.custo;
-    produto.imagem = dto.imagem ? Buffer.from(dto.imagem, 'base64') : null;
+    produto.imagem = dto.imagem
+      ? Buffer.from(
+          SaveProdutoDto.getBase64StringFromDataURL(dto.imagem),
+          'base64',
+        )
+      : null;
 
     return produto;
+  }
+
+  private static getBase64StringFromDataURL(base64: string): string {
+    return base64.split(',')[1];
   }
 }

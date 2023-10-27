@@ -1,13 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, In, Repository } from 'typeorm';
 
 import { ProdutoLoja } from './entities/produtoLoja.entity';
 import { Produto } from './entities/produto.entity';
 import { ProdutoDto } from './dto/produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
 import { DetailsProdutoLojaDto } from './dto/details-produtoLoja.dto';
-import { CreateProdutoDto } from './dto/create-produto.dto';
+import { SaveProdutoDto } from './dto/save-produto.dto';
 import { ProdutoLojaDto } from './dto/produtoLoja.dto';
 
 @Injectable()
@@ -67,70 +67,82 @@ export class ProdutosService {
     this.produtoRepository.delete(id);
   }
 
-  async create(createProdutoDto: CreateProdutoDto): Promise<void> {
+  async save(saveProdutoDto: SaveProdutoDto): Promise<void> {
     let produtoId: number;
 
-    await this.validarProdutoLojas(
-      createProdutoDto.produtoLojas.map((pl) => pl.idLoja),
-    );
+    const idsProdutoLojas = saveProdutoDto.produtoLojas.map((pl) => pl.idLoja);
+
+    await this.validarProdutoLojas(idsProdutoLojas);
+
+    const listaProdutoLojasRemovidos: number[] =
+      await this.verificaProdutoLojasRemovidos(
+        saveProdutoDto.id,
+        idsProdutoLojas,
+      );
 
     await this.produtoRepository.manager.transaction(
       async (manager: EntityManager) => {
         const produto: Produto =
-          CreateProdutoDto.createProdutoDtoToProduto(createProdutoDto);
+          SaveProdutoDto.saveProdutoDtoProduto(saveProdutoDto);
 
         produtoId = (await manager.save(produto)).id;
 
+        if (listaProdutoLojasRemovidos.length > 0)
+          await manager.delete(ProdutoLoja, {
+            idProduto: produto.id,
+            idLoja: In(listaProdutoLojasRemovidos),
+          });
+
         const produtoLojas = ProdutoLojaDto.produtoLojaDtoToProdutoLoja(
           produtoId,
-          createProdutoDto.produtoLojas,
+          saveProdutoDto.produtoLojas,
         );
 
         await manager.save(produtoLojas);
       },
     );
-
-    // return produtoId;
   }
 
-  private async validarProdutoLojas(
-    lojasParaAtualizar: number[],
-    isUpdate = false,
-    produtoId?: number,
-  ): Promise<void> {
-    const lojasValidas = new Set<number>();
-
-    if (await this.verificaLojasRepetidas(lojasValidas, lojasParaAtualizar)) {
+  private async validarProdutoLojas(novaListaLojas: number[]): Promise<void> {
+    if (await this.verificaLojasRepetidas(novaListaLojas)) {
       throw new HttpException(
         'Não é permitido mais que um preço de venda para a mesma loja.',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    if (isUpdate && produtoId) {
-      const lojasExistentes: number[] = (
-        await this.produtoLojaRepository.find({
-          where: { idProduto: produtoId },
-        })
-      ).map((produtoLoja) => produtoLoja.idLoja);
-
-      if (this.verificaLojasRepetidas(lojasValidas, lojasExistentes)) {
-        throw new HttpException(
-          'Não é permitido mais que um preço de venda para a mesma loja.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    }
   }
 
-  private async verificaLojasRepetidas(
-    lojasValidas: Set<number>,
-    listaLojas: number[],
-  ) {
+  private async verificaLojasRepetidas(listaLojas: number[]) {
+    const lojasValidas = new Set<number>();
+
     return listaLojas.some((loja) => {
       if (lojasValidas.has(loja)) return true;
       lojasValidas.add(loja);
       return false;
     });
+  }
+
+  private async verificaProdutoLojasRemovidos(
+    produtoId: number,
+    novaListaProdutoLoja: number[],
+  ) {
+    const listaProdutoLojasRemovidos: number[] = [];
+
+    const idsLojasExistentes: number[] = (
+      await this.produtoLojaRepository.find({
+        select: { idLoja: true },
+        where: { idProduto: produtoId },
+      })
+    ).map((produtoLoja) => produtoLoja.idLoja);
+
+    for (const idLojaExistente of idsLojasExistentes) {
+      const lojaRemovida = !novaListaProdutoLoja.some(
+        (idLoja) => idLoja == idLojaExistente,
+      );
+
+      if (lojaRemovida) listaProdutoLojasRemovidos.push(idLojaExistente);
+    }
+
+    return listaProdutoLojasRemovidos;
   }
 }

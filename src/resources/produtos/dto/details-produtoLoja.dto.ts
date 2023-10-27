@@ -1,7 +1,7 @@
 import { ProdutoLoja } from '../entities/produtoLoja.entity';
 
 export class DetailsProdutoLojaDto {
-  id: number;
+  idLoja: number;
   descricao: string;
   precoVenda: number;
 
@@ -13,7 +13,7 @@ export class DetailsProdutoLojaDto {
     for (const produtoLoja of produtoLojas) {
       const dto = new DetailsProdutoLojaDto();
 
-      dto.id = produtoLoja.loja.id;
+      dto.idLoja = produtoLoja.loja.id;
       dto.precoVenda = produtoLoja.precoVenda;
       dto.descricao = `${produtoLoja.loja.id}-${produtoLoja.loja.descricao}`;
 

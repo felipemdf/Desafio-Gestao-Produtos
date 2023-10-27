@@ -5,7 +5,6 @@ export class ProdutoDto {
   id: number;
   descricao: string;
   custo?: number;
-  imagem?: Buffer;
   produtoLojas: ProdutoLojaDto[] = [];
 
   static produtoToProdutoDto(produtos: Produto[]): ProdutoDto[] {
@@ -17,7 +16,6 @@ export class ProdutoDto {
       produtoDto.id = produto.id;
       produtoDto.descricao = produto.descricao;
       produtoDto.custo = produto.custo;
-      produtoDto.imagem = produto.imagem;
 
       produtoDto.produtoLojas = ProdutoLojaDto.produtoLojaToProdutoLojaDto(
         produto.produtoLojas,

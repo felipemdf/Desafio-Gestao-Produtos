@@ -6,17 +6,14 @@ import {
   HttpCode,
   Param,
   Post,
-  Query,
-  Res,
 } from '@nestjs/common';
-
-import { Response } from 'express';
 
 import { ProdutosService } from './produtos.service';
 
+import pako from 'pako';
 import { ProdutoDto } from './dto/produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
-import { CreateProdutoDto } from './dto/create-produto.dto';
+import { SaveProdutoDto } from './dto/save-produto.dto';
 
 @Controller('produtos')
 export class ProdutosController {
@@ -39,7 +36,7 @@ export class ProdutosController {
   }
 
   @Post()
-  async create(@Body() createProdutoDto: CreateProdutoDto) {
-    return await this.produtoService.create(createProdutoDto);
+  async save(@Body() createProdutoDto: SaveProdutoDto) {
+    return await this.produtoService.save(createProdutoDto);
   }
 }
