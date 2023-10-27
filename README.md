@@ -1,73 +1,53 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Meu Projeto Nest.js
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este é o meu incrível projeto desenvolvido com o framework Nest.js. Este README fornece instruções para configurar e executar o projeto em seu ambiente local.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Pré-requisitos
 
-## Description
+Antes de começar, certifique-se de que você tenha instalado:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Node.js (v16+ recomendado): [Baixar Node.js](https://nodejs.org/)
+- npm (gerenciador de pacotes do Node.js): Normalmente é instalado automaticamente com o Node.js.
 
-## Installation
+## Instalação
 
-```bash
-$ npm install
+1. Clone este repositório:
+
+   ```bash
+   git clone https://github.com/seu-usuario/seu-projeto.git
+   ```
+
+2. Navegue até o diretório do projeto:
+
+   ```bash
+   cd seu-projeto
+   ```
+
+3. Instale as dependências do projeto:
+
+   ```bash
+   npm install
+   ```
+
+## Configuração
+
+Altere o nome do arquivo `.env.example` para `.env` e altere as informações do banco e da aplicação que serão necessárias.
+
+## Executando o Projeto
+
+Agora que o projeto está configurado, você pode executá-lo:
+
+```
+  bash npm install
 ```
 
-## Running the app
+O servidor Nest.js será iniciado e você verá mensagens no console indicando que o servidor está em execução. Por padrão, o servidor estará disponível em http://localhost:3000
 
-```bash
-# development
-$ npm run start
+## Docker
 
-# watch mode
-$ npm run start:dev
+Caso você possua o docker é possível executar o projeto em um container.
+Para isso configure o host do banco para `db` na variável de ambiente e execute o seguinte comando:
 
-# production mode
-$ npm run start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  docker compose up
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
