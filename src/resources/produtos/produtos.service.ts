@@ -1,66 +1,42 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, In, Repository } from 'typeorm';
 
-import { ProdutoLoja } from './entities/produtoLoja.entity';
 import { Produto } from './entities/produto.entity';
 import { ProdutoDto } from './dto/produto.dto';
 import { DetailsProdutoDto } from './dto/details-produto.dto';
 import { DetailsProdutoLojaDto } from './dto/details-produtoLoja.dto';
 import { SaveProdutoDto } from './dto/save-produto.dto';
-import { ProdutoLojaDto } from './dto/produtoLoja.dto';
+import { ProdutoRepository } from './produtos.repository';
+import { ProdutolojaRepository } from './produtoLojas.repository';
 
 @Injectable()
 export class ProdutosService {
   constructor(
-    @InjectRepository(Produto)
-    private produtoRepository: Repository<Produto>,
-
-    @InjectRepository(ProdutoLoja)
-    private produtoLojaRepository: Repository<ProdutoLoja>,
+    private produtoRepository: ProdutoRepository,
+    private produtoLojaRepository: ProdutolojaRepository,
   ) {}
 
   async findAll(): Promise<ProdutoDto[]> {
-    const produtos: Produto[] = await this.produtoRepository.find({
-      select: {
-        produtoLojas: { precoVenda: true, idLoja: true },
-      },
-      relations: ['produtoLojas'],
-    });
+    const produtos: Produto[] = await this.produtoRepository.findAll();
 
     if (!produtos || produtos.length == 0) return [];
 
-    const produtosDto: ProdutoDto[] = ProdutoDto.produtoToProdutoDto(produtos);
-
-    return produtosDto;
+    return ProdutoDto.produtoToProdutoDto(produtos);
   }
 
   async findOne(id: number): Promise<DetailsProdutoDto> {
-    const produto: Produto = (
-      await this.produtoRepository.find({
-        select: {
-          produtoLojas: {
-            precoVenda: true,
-            loja: { id: true, descricao: true },
-          },
-        },
-        where: { id: id },
-        relations: ['produtoLojas', 'produtoLojas.loja'],
-      })
-    )[0];
+    const produto: Produto = await this.produtoRepository.findById(id);
 
     if (!produto) {
       throw new HttpException(`Produto não encontrado`, HttpStatus.NOT_FOUND);
     }
-    const detailsProduto =
-      DetailsProdutoDto.produtoToDetailsProdutoDto(produto);
+    const response = DetailsProdutoDto.produtoToDetailsProdutoDto(produto);
 
-    detailsProduto.produtoLojas =
+    response.produtoLojas =
       DetailsProdutoLojaDto.produtoLojasToDetailsProdutoLojaDto(
         produto.produtoLojas,
       );
 
-    return detailsProduto;
+    return response;
   }
 
   async remove(id: number): Promise<void> {
@@ -68,39 +44,22 @@ export class ProdutosService {
   }
 
   async save(saveProdutoDto: SaveProdutoDto): Promise<void> {
-    let produtoId: number;
-
     const idsProdutoLojas = saveProdutoDto.produtoLojas.map((pl) => pl.idLoja);
 
     await this.validarProdutoLojas(idsProdutoLojas);
 
-    const listaProdutoLojasRemovidos: number[] =
-      await this.verificaProdutoLojasRemovidos(
+    let listaProdutoLojasRemovidos: number[] = [];
+    if (saveProdutoDto.id) {
+      listaProdutoLojasRemovidos = await this.verificaProdutoLojasRemovidos(
         saveProdutoDto.id,
         idsProdutoLojas,
       );
+    }
 
-    await this.produtoRepository.manager.transaction(
-      async (manager: EntityManager) => {
-        const produto: Produto =
-          SaveProdutoDto.saveProdutoDtoProduto(saveProdutoDto);
+    const produto: Produto =
+      SaveProdutoDto.saveProdutoDtoProduto(saveProdutoDto);
 
-        produtoId = (await manager.save(produto)).id;
-
-        if (listaProdutoLojasRemovidos.length > 0)
-          await manager.delete(ProdutoLoja, {
-            idProduto: produto.id,
-            idLoja: In(listaProdutoLojasRemovidos),
-          });
-
-        const produtoLojas = ProdutoLojaDto.produtoLojaDtoToProdutoLoja(
-          produtoId,
-          saveProdutoDto.produtoLojas,
-        );
-
-        await manager.save(produtoLojas);
-      },
-    );
+    this.produtoRepository.saveProduto(produto, listaProdutoLojasRemovidos);
   }
 
   private async validarProdutoLojas(novaListaLojas: number[]): Promise<void> {
@@ -112,7 +71,7 @@ export class ProdutosService {
     }
   }
 
-  private async verificaLojasRepetidas(listaLojas: number[]) {
+  public async verificaLojasRepetidas(listaLojas: number[]): Promise<boolean> {
     const lojasValidas = new Set<number>();
 
     return listaLojas.some((loja) => {
@@ -122,17 +81,14 @@ export class ProdutosService {
     });
   }
 
-  private async verificaProdutoLojasRemovidos(
+  public async verificaProdutoLojasRemovidos(
     produtoId: number,
     novaListaProdutoLoja: number[],
   ) {
     const listaProdutoLojasRemovidos: number[] = [];
 
     const idsLojasExistentes: number[] = (
-      await this.produtoLojaRepository.find({
-        select: { idLoja: true },
-        where: { idProduto: produtoId },
-      })
+      await this.produtoLojaRepository.findProdutoLojasPorProduto(produtoId)
     ).map((produtoLoja) => produtoLoja.idLoja);
 
     for (const idLojaExistente of idsLojasExistentes) {

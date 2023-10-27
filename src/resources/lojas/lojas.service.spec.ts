@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LojasService } from './lojas.service';
 import { LojaDto } from './dto/loja.dto';
-import { LojaRepository } from './loja.repository';
+import { LojaRepository } from './lojas.repository';
 
 const lojasList: LojaDto[] = [
   { id: 1, descricao: '1-LOJA 1' },

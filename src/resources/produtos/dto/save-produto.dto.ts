@@ -57,6 +57,10 @@ export class SaveProdutoDto {
         )
       : null;
 
+    produto.produtoLojas = ProdutoLojaDto.produtoLojaDtoToProdutoLoja(
+      dto.produtoLojas,
+    );
+
     return produto;
   }
 
