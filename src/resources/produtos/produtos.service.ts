@@ -67,7 +67,7 @@ export class ProdutosService {
     this.produtoRepository.delete(id);
   }
 
-  async create(createProdutoDto: CreateProdutoDto) {
+  async create(createProdutoDto: CreateProdutoDto): Promise<void> {
     let produtoId: number;
 
     await this.validarProdutoLojas(
@@ -90,7 +90,7 @@ export class ProdutosService {
       },
     );
 
-    return produtoId;
+    // return produtoId;
   }
 
   private async validarProdutoLojas(

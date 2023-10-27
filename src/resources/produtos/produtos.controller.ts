@@ -39,13 +39,7 @@ export class ProdutosController {
   }
 
   @Post()
-  @HttpCode(303)
-  async create(
-    @Body() createProdutoDto: CreateProdutoDto,
-    @Res() res: Response,
-  ) {
-    const produtoId = await this.produtoService.create(createProdutoDto);
-
-    res.redirect(`/produtos/${produtoId}`);
+  async create(@Body() createProdutoDto: CreateProdutoDto) {
+    return await this.produtoService.create(createProdutoDto);
   }
 }

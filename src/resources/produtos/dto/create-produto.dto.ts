@@ -30,7 +30,7 @@ export class CreateProdutoDto {
   custo?: number;
 
   @IsOptional()
-  imagem?: Buffer;
+  imagem?: string;
 
   @IsArray({ message: 'O campo produtoLojas deve ser uma lista' })
   @ArrayNotEmpty({ message: 'O campo produtoLojas não deve estar vazio' })
@@ -43,7 +43,7 @@ export class CreateProdutoDto {
 
     produto.descricao = dto.descricao;
     produto.custo = dto.custo;
-    produto.imagem = dto.imagem;
+    produto.imagem = dto.imagem ? Buffer.from(dto.imagem, 'base64') : null;
 
     return produto;
   }
