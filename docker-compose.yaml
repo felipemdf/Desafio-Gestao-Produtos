@@ -32,23 +32,23 @@ services:
       POSTGRES_DB: ${DB_NAME}
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - api_db_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "teste@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "teste"
-    ports:
-      - "16543:80"
-    depends_on:
-      - postgres
-    networks:
-      - desafio-gestao-produtos-network
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "teste@gmail.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "teste"
+  #   ports:
+  #     - "16543:80"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - desafio-gestao-produtos-network
+  #   volumes:
+  #     - pgadmin-data:/var/lib/pgadmin
 
 
 networks:

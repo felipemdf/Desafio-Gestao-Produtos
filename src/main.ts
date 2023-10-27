@@ -14,6 +14,7 @@ async function bootstrap() {
   });
 
   app.use(json({ limit: '50MB' }));
-  await app.listen(3000);
+
+  await app.listen(process.env.API_PORT);
 }
 bootstrap();

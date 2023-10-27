@@ -1,6 +1,4 @@
-# Meu Projeto Nest.js
-
-Este é o meu incrível projeto desenvolvido com o framework Nest.js. Este README fornece instruções para configurar e executar o projeto em seu ambiente local.
+# Gesafio Gestão Produtos
 
 ## Pré-requisitos
 
@@ -14,13 +12,13 @@ Antes de começar, certifique-se de que você tenha instalado:
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/seu-projeto.git
+   git clone https://github.com/felipemdf/desafio-gestao-produtos-backend.git
    ```
 
 2. Navegue até o diretório do projeto:
 
    ```bash
-   cd seu-projeto
+   cd desafio-gestao-produtos-backend
    ```
 
 3. Instale as dependências do projeto:
@@ -31,22 +29,28 @@ Antes de começar, certifique-se de que você tenha instalado:
 
 ## Configuração
 
-Altere o nome do arquivo `.env.example` para `.env` e altere as informações do banco e da aplicação que serão necessárias.
+1. Altere o nome do arquivo `.env.example` para `.env` e altere as informações do banco e da aplicação que serão necessárias.
+
+2. Crie uma banco de dados com o mesmo nome da variável de ambiente `DB_NAME`
+
+3. Execute as migrations para criar as tabelas com o comando:
+   ```bash
+   npm run migration:run
+   ```
 
 ## Executando o Projeto
 
 Agora que o projeto está configurado, você pode executá-lo:
 
 ```
-  bash npm install
+  bash npm run start
 ```
 
 O servidor Nest.js será iniciado e você verá mensagens no console indicando que o servidor está em execução. Por padrão, o servidor estará disponível em http://localhost:3000
 
 ## Docker
 
-Caso você possua o docker é possível executar o projeto em um container.
-Para isso configure o host do banco para `db` na variável de ambiente e execute o seguinte comando:
+Caso você possua o docker é possível executar o projeto utilizando-o.Para isso configure o host do banco para `db` na variável de ambiente e execute o seguinte comando:
 
 ```
   docker compose up

@@ -1,5 +1,9 @@
 import { DataSource } from 'typeorm';
 
+// GAMBIARRA SURGINDO EM 3...2...1
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
+
 export const dataSource: DataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
