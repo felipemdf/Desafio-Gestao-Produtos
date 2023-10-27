@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-  app.enableCors({ origin: ['http://localhost:4200'] });
+  app.enableCors({ origin: ['*'] });
 
   app.use(json({ limit: '50MB' }));
   await app.listen(3000);
