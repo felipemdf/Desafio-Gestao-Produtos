@@ -11,4 +11,10 @@ export class Loja {
 
   @OneToMany(() => ProdutoLoja, (produtoLoja) => produtoLoja.loja)
   produtoLojas: ProdutoLoja[];
+
+  constructor(loja: Partial<Loja>) {
+    this.id = loja?.id;
+    this.descricao = loja?.descricao;
+    this.produtoLojas = loja?.produtoLojas;
+  }
 }

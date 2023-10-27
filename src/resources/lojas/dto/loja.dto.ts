@@ -1,4 +1,4 @@
 export class LojaDto {
-  id: string;
+  id: number;
   descricao: string;
 }
