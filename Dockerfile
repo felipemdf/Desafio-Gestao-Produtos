@@ -1,12 +1,12 @@
+
 FROM node:16.14 As development
+
+RUN npm i -g @angular/cli
 
 WORKDIR /usr/src/app
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
-
-RUN npm run build
